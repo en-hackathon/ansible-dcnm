@@ -10,6 +10,6 @@ jobs:
     steps:
       - run:
           command: |
-            pyenv versions
-            pyenv which python
+            /home/admin/.pyenv/bin/pyenv versions
+            /home/admin/.pyenv/bin/pyenv which python
             python --version
