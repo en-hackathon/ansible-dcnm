@@ -10,6 +10,5 @@ jobs:
     steps:
       - run:
           command: |
-            /home/admin/.pyenv/bin/pyenv versions
-            /home/admin/.pyenv/bin/pyenv which python
+            /home/admin/.pyenv/bin/pyenv local en-hackathon
             python --version
