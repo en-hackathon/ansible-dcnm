@@ -10,5 +10,7 @@ jobs:
     steps:
       - run:
           command: |
+            env
+            whoami
             /home/admin/.pyenv/bin/pyenv local en-hackathon
             python --version
