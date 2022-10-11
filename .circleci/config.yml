@@ -8,4 +8,8 @@ jobs:
     machine: true
     resource_class: en-hackathon/ndfc_resource
     steps:
-      - run: echo "Hi I'm on Runners! Mike W"
+      - run:
+          command: |
+            pyenv versions
+            pyenv which python
+            python --version
