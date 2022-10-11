@@ -12,5 +12,5 @@ jobs:
           command: |
             env
             whoami
-            /home/admin/.pyenv/bin/pyenv local en-hackathon
+            # /home/admin/.pyenv/bin/pyenv local en-hackathon
             python --version
