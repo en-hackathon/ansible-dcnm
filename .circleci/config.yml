@@ -12,6 +12,6 @@ jobs:
           command: |
             # env
             whoami
-            pyenv local en-hackathon
+            /home/circleci/.pyenv/bin/pyenv local en-hackathon
             python --version
             ansible --version
