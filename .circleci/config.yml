@@ -10,7 +10,8 @@ jobs:
     steps:
       - run:
           command: |
-            # env
+            env
+            echo "\n"
             whoami
             /home/circleci/.pyenv/bin/pyenv local en-hackathon
             python --version
