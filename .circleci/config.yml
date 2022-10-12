@@ -16,4 +16,5 @@ jobs:
             python --version
             /home/circleci/.pyenv/shims/ansible --version
             cd /home/circleci/en-hackathon
+            source source_env
             /home/circleci/.pyenv/shims/ansible-playbook -i ndfc_inventory.yml ndfc_tests.yml -v
