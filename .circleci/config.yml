@@ -14,4 +14,4 @@ jobs:
             whoami
             /home/circleci/.pyenv/bin/pyenv local en-hackathon
             python --version
-            ansible --version
+            /home/circleci/.pyenv/shims/ansible --version
