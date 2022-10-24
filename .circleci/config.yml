@@ -8,6 +8,7 @@ jobs:
     machine: true
     resource_class: en-hackathon/ndfc_resource
     steps:
+      - checkout
       - run:
           command: |
             env
