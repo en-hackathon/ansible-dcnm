@@ -2,20 +2,44 @@ version: 2.1
 workflows:
   testing:
     jobs:
-      - runner-test
+      - sanity-test:
+          filters:
+            branches:
+              ignore:
+                - develop
+                - main
+                - en-hackathon
+                - /feature-.*/
+      - full-regresion-test:
+          filters:
+            branches:
+             only:
+               - en-hackathon
+
 jobs:
-  runner-test:
+  sanity-test:
     machine: true
     resource_class: en-hackathon/ndfc_resource
     steps:
+      # - checkout
       - run:
           command: |
             env
-            echo "\n"
+            echo "Sanity Test Complete"
             whoami
-            /home/circleci/.pyenv/bin/pyenv local en-hackathon
-            python --version
-            /home/circleci/.pyenv/shims/ansible --version
-            cd /home/circleci/en-hackathon
-            source source_env
-            /home/circleci/.pyenv/shims/ansible-playbook -i ndfc_inventory.yml ndfc_tests.yml -v
+            # /home/circleci/.pyenv/bin/pyenv local en-hackathon
+            # python --version
+            # /home/circleci/.pyenv/shims/ansible --version
+            # cd /home/circleci/en-hackathon
+            # source source_env
+            # /home/circleci/.pyenv/shims/ansible-playbook -i ndfc_inventory.yml ndfc_tests.yml -v
+
+  full-regresion-test:
+    machine: true
+    resource_class: en-hackathon/ndfc_resource
+    steps:
+      # - checkout
+      - run:
+          command: |
+            env
+            echo "Full Regression Test Complete"
