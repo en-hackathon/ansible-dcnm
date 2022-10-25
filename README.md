@@ -1,6 +1,6 @@
 [![Actions Status](https://github.com/CiscoDevNet/ansible-dcnm/workflows/CI/badge.svg)](https://github.com/CiscoDevNet/ansible-dcnm/actions)
 
-Update 10_24_6_09_PM
+Update 10_25_9_40_AM
 
 # Cisco DCNM Collection
 
