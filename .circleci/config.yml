@@ -15,6 +15,12 @@ workflows:
             branches:
              only:
                - en-hackathon
+      - deploy-on-galaxy:
+          filters:
+            tags:
+              only: /^[d+]\.[d+]\.[d+]/
+            branches:
+              ignore: /.*/
 
 jobs:
   sanity-test:
@@ -43,3 +49,13 @@ jobs:
           command: |
             env
             echo "Full Regression Test Complete"
+
+  deploy-on-galaxy:
+    machine: true
+    resource_class: en-hackathon/ndfc_resource
+    steps:
+      # - checkout
+      - run:
+          command: |
+            env
+            echo "Publish Artifacts on Galaxy"
