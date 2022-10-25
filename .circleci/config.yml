@@ -2,8 +2,20 @@ version: 2.1
 workflows:
   testing:
     jobs:
-      - sanity-test
-      - full-regresion-test
+      - sanity-test:
+          filters:
+            branches:
+              ignore:
+                - develop
+                - main
+                - en-hackathon
+                - /feature-.*/
+      - full-regresion-test:
+          filters:
+            branches:
+             only:
+               - en-hackathon
+
 jobs:
   sanity-test:
     machine: true
