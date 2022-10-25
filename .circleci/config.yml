@@ -19,7 +19,7 @@ workflows:
       - deploy-on-galaxy:
           filters:
             tags:
-              only: /^\d+\.\d+\.\d+$/
+              only: /^r.*/
             branches:
               ignore: /.*/
 
