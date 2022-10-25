@@ -9,7 +9,6 @@ workflows:
                 - develop
                 - main
                 - en-hackathon
-                - /feature-.*/
       - full-regresion-test:
           filters:
             branches:
