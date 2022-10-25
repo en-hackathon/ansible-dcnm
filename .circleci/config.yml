@@ -3,12 +3,13 @@ workflows:
   testing:
     jobs:
       - runner-test
+      - container-test
 jobs:
   runner-test:
     machine: true
     resource_class: en-hackathon/ndfc_resource
     steps:
-      - checkout
+      # - checkout
       - run:
           command: |
             env
@@ -20,3 +21,16 @@ jobs:
             cd /home/circleci/en-hackathon
             source source_env
             /home/circleci/.pyenv/shims/ansible-playbook -i ndfc_inventory.yml ndfc_tests.yml -v
+
+  container-test:
+    machine: true
+    resource_class: en-hackathon/ndfc_resource
+    docker:
+      - image: "cytopia/ansible-lint"
+    steps:
+      # - checkout
+      - run:
+          command: |
+            env
+            echo "\n"
+            whoami
