@@ -10,25 +10,25 @@ workflows:
                 - main
                 - en-hackathon
                 - /feature-.*/
-      - full-regresion-test:
-          filters:
-            branches:
-             only:
-               - en-hackathon
-               - develop
-      - deploy-on-galaxy:
-          filters:
-            tags:
-              only: /^r.*/
-            branches:
-              ignore: /.*/
+      # - full-regresion-test:
+      #     filters:
+      #       branches:
+      #        only:
+      #          - en-hackathon
+      #          - develop
+      # - deploy-on-galaxy:
+      #     filters:
+      #       tags:
+      #         only: /^r.*/
+      #       branches:
+      #         ignore: /.*/
 
 jobs:
   sanity-test:
     machine: true
     resource_class: en-hackathon/ndfc_resource
     steps:
-      # - checkout
+      - checkout
       - run:
           command: |
             env
