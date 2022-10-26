@@ -1,8 +1,13 @@
 version: 2.1
+orbs:
+  advanced-checkout: vsco/advanced-checkout@1.0.0
 workflows:
   testing:
     jobs:
+      - build-collection
       - sanity-test:
+          requires:
+            - build-collection
           filters:
             branches:
               ignore:
@@ -10,11 +15,15 @@ workflows:
                 - main
                 - en-hackathon
       - full-regresion-test:
+          requires:
+            - build-collection
           filters:
             branches:
              only:
                - en-hackathon
       - deploy-on-galaxy:
+          requires:
+            - build-collection
           filters:
             tags:
               only: /^2.*/
@@ -22,22 +31,43 @@ workflows:
               ignore: /.*/
 
 jobs:
+  build-collection:
+    machine: true
+    resource_class: en-hackathon/ndfc_resource
+    steps:
+      - run:
+          command: |
+            # This was needed because the next step does an rm but several write protected files
+            # under /home/circleci/project from previous git clone
+            rm -rf /home/circleci/project
+      - advanced-checkout/shallow-checkout:
+          fetch_lfs: true
+          fetch_submodules: true
+      - run:
+          command: |
+            /home/circleci/.pyenv/bin/pyenv local en-hackathon
+            /home/circleci/.pyenv/shims/ansible-galaxy collection list
+            rm -rf /home/circleci/.ansible/collections/ansible_collections/cisco/dcnm/
+            /home/circleci/.pyenv/shims/ansible-galaxy collection list
+            cd /home/circleci/project/
+            /home/circleci/.pyenv/shims/ansible-galaxy collection build
+            /home/circleci/.pyenv/shims/ansible-galaxy collection install ./cisco-dcnm-*
+            /home/circleci/.pyenv/shims/ansible-galaxy collection list
   sanity-test:
     machine: true
     resource_class: en-hackathon/ndfc_resource
     steps:
-      # - checkout
       - run:
           command: |
             env
             echo "Sanity Test Complete"
             whoami
-            # /home/circleci/.pyenv/bin/pyenv local en-hackathon
-            # python --version
-            # /home/circleci/.pyenv/shims/ansible --version
-            # cd /home/circleci/en-hackathon
-            # source source_env
-            # /home/circleci/.pyenv/shims/ansible-playbook -i ndfc_inventory.yml ndfc_tests.yml -v
+            /home/circleci/.pyenv/bin/pyenv local en-hackathon
+            python --version
+            /home/circleci/.pyenv/shims/ansible --version
+            cd /home/circleci/en-hackathon
+            source source_env
+            /home/circleci/.pyenv/shims/ansible-playbook -i ndfc_inventory.yml ndfc_tests.yml -v
 
   full-regresion-test:
     machine: true
