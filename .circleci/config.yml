@@ -86,3 +86,5 @@ jobs:
           command: |
             env
             echo "Publish Artifacts on Galaxy"
+            # Figure out context when this job runs
+            # Build must happen in release branch before publishing to galaxy
