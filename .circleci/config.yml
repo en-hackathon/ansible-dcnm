@@ -100,3 +100,4 @@ jobs:
             /home/circleci/.pyenv/shims/ansible-galaxy collection build
             /home/circleci/.pyenv/shims/ansible-galaxy collection install ./mikewiebe*
             /home/circleci/.pyenv/shims/ansible-galaxy collection list
+            ansible-galaxy collection publish ./mikewiebe-test-ci-publish-* --token=$ANSIBLE_GALAXY_TOKEN
