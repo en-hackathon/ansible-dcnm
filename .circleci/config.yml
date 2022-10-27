@@ -47,11 +47,11 @@ jobs:
           command: |
             /home/circleci/.pyenv/bin/pyenv local en-hackathon
             /home/circleci/.pyenv/shims/ansible-galaxy collection list
-            rm -rf /home/circleci/.ansible/collections/ansible_collections/cisco/dcnm/
+            rm -rf /home/circleci/.ansible/collections/ansible_collections/mikewiebe/test-ci-publish/
             /home/circleci/.pyenv/shims/ansible-galaxy collection list
             cd /home/circleci/project/
             /home/circleci/.pyenv/shims/ansible-galaxy collection build
-            /home/circleci/.pyenv/shims/ansible-galaxy collection install ./cisco-dcnm-*
+            /home/circleci/.pyenv/shims/ansible-galaxy collection install ./mikewiebe*
             /home/circleci/.pyenv/shims/ansible-galaxy collection list
   sanity-test:
     machine: true
@@ -67,7 +67,7 @@ jobs:
             /home/circleci/.pyenv/shims/ansible --version
             cd /home/circleci/en-hackathon
             source source_env
-            /home/circleci/.pyenv/shims/ansible-playbook -i ndfc_inventory.yml ndfc_tests.yml -v
+            # /home/circleci/.pyenv/shims/ansible-playbook -i ndfc_inventory.yml ndfc_tests.yml -v
 
   full-regresion-test:
     machine: true
@@ -86,5 +86,9 @@ jobs:
           command: |
             env
             echo "Publish Artifacts on Galaxy"
+            cd /home/circleci/project
+            git status .
+            git checkout $CIRCLE_TAG
+            git status .
             # Figure out context when this job runs
             # Build must happen in release branch before publishing to galaxy
