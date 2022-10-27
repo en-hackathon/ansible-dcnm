@@ -22,8 +22,6 @@ workflows:
              only:
                - en-hackathon
       - deploy-on-galaxy:
-          requires:
-            - build-collection
           filters:
             tags:
               only: /^2.*/
@@ -82,6 +80,24 @@ jobs:
     machine: true
     resource_class: en-hackathon/ndfc_resource
     steps:
+      - run:
+          command: |
+            # This was needed because the next step does an rm but several write protected files
+            # under /home/circleci/project from previous git clone
+            rm -rf /home/circleci/project
+      - advanced-checkout/shallow-checkout:
+          fetch_lfs: true
+          fetch_submodules: true
+      - run:
+          command: |
+            /home/circleci/.pyenv/bin/pyenv local en-hackathon
+            /home/circleci/.pyenv/shims/ansible-galaxy collection list
+            rm -rf /home/circleci/.ansible/collections/ansible_collections/mikewiebe/test-ci-publish/
+            /home/circleci/.pyenv/shims/ansible-galaxy collection list
+            cd /home/circleci/project/
+            /home/circleci/.pyenv/shims/ansible-galaxy collection build
+            /home/circleci/.pyenv/shims/ansible-galaxy collection install ./mikewiebe*
+            /home/circleci/.pyenv/shims/ansible-galaxy collection list
       - run:
           command: |
             env
