@@ -85,7 +85,6 @@ jobs:
             # This was needed because the next step does an rm but several write protected files
             # under /home/circleci/project from previous git clone
             env
-            ls $MIKE_TEST_VAR
             rm -rf /home/circleci/project
             git clone $CIRCLE_REPOSITORY_URL /home/circleci/project
             cd /home/circleci/project
