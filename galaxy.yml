@@ -1,7 +1,7 @@
 ---
 namespace: mikewiebe
 name: test-ci-publish
-version: 2.1.13
+version: 2.1.14
 readme: README.md
 authors:
   - Mike Wiebe <mikewiebe>
