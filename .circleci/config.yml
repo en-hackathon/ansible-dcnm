@@ -85,11 +85,11 @@ jobs:
             # This was needed because the next step does an rm but several write protected files
             # under /home/circleci/project from previous git clone
             rm -rf /home/circleci/project
-      - advanced-checkout/shallow-checkout:
-          fetch_lfs: true
-          fetch_submodules: true
-      - run:
-          command: |
+            git clone $CIRCLE_REPOSITORY_URL /home/circleci/project
+            cd /home/circleci/project
+            git status .
+            git checkout $CIRCLE_TAG
+            git status .
             /home/circleci/.pyenv/bin/pyenv local en-hackathon
             /home/circleci/.pyenv/shims/ansible-galaxy collection list
             rm -rf /home/circleci/.ansible/collections/ansible_collections/mikewiebe/test-ci-publish/
@@ -98,13 +98,3 @@ jobs:
             /home/circleci/.pyenv/shims/ansible-galaxy collection build
             /home/circleci/.pyenv/shims/ansible-galaxy collection install ./mikewiebe*
             /home/circleci/.pyenv/shims/ansible-galaxy collection list
-      - run:
-          command: |
-            env
-            echo "Publish Artifacts on Galaxy"
-            cd /home/circleci/project
-            git status .
-            git checkout $CIRCLE_TAG
-            git status .
-            # Figure out context when this job runs
-            # Build must happen in release branch before publishing to galaxy
