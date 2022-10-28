@@ -56,6 +56,7 @@ jobs:
             /home/circleci/.pyenv/bin/pyenv local en-hackathon
             /home/circleci/.pyenv/shims/ansible-galaxy collection list
             rm -rf /home/circleci/.ansible/collections/ansible_collections/mikewiebe/test-ci-publish/
+            echo 'collection removed'
             /home/circleci/.pyenv/shims/ansible-galaxy collection list
             cd /home/circleci/project/
             /home/circleci/.pyenv/shims/ansible-galaxy collection build
