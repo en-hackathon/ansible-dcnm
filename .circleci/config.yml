@@ -5,7 +5,9 @@ workflows:
   testing:
     jobs:
       - clone-repo
-      - build-collection
+      - build-collection:
+          requires:
+            - clone-repo
       # - sanity-test:
       #     requires:
       #       - build-collection
