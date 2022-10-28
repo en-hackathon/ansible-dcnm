@@ -14,9 +14,9 @@ workflows:
           filters:
             branches:
               ignore:
-                - develop
                 - main
-                - en-hackathon
+                - develop
+                - release-branch
       - full-regresion-test:
           requires:
             - build-collection
