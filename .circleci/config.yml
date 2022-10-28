@@ -20,7 +20,7 @@ workflows:
           filters:
             branches:
              only:
-               - en-hackathon
+               - release-branch
       - deploy-on-galaxy:
           filters:
             tags:
