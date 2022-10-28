@@ -40,7 +40,7 @@ jobs:
             # under /home/circleci/project from previous git clone
             rm -rf /home/circleci/project
             mkdir -p /home/circleci/project
-            git clone --branch $CIRCLE_BRANCH https://github.com/en-hackathon/ansible-dcnm.git
+            git clone --branch $CIRCLE_BRANCH https://github.com/en-hackathon/ansible-dcnm.git /home/circleci/project
   build-collection:
     machine: true
     resource_class: en-hackathon/ndfc_resource
