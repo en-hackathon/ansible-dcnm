@@ -4,32 +4,33 @@ orbs:
 workflows:
   testing:
     jobs:
-      - build-collection
-      - sanity-test:
-          requires:
-            - build-collection
-          filters:
-            branches:
-              ignore:
-                - develop
-                - main
-                - en-hackathon
-      - full-regresion-test:
-          requires:
-            - build-collection
-          filters:
-            branches:
-             only:
-               - release-branch
-      - deploy-on-galaxy:
-          filters:
-            tags:
-              only: /^2.*/
-            branches:
-              ignore: /.*/
+      - clone-repo
+      # - build-collection
+      # - sanity-test:
+      #     requires:
+      #       - build-collection
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - develop
+      #           - main
+      #           - en-hackathon
+      # - full-regresion-test:
+      #     requires:
+      #       - build-collection
+      #     filters:
+      #       branches:
+      #        only:
+      #          - release-branch
+      # - deploy-on-galaxy:
+      #     filters:
+      #       tags:
+      #         only: /^2.*/
+      #       branches:
+      #         ignore: /.*/
 
 jobs:
-  build-collection:
+  clone-repo:
     machine: true
     resource_class: en-hackathon/ndfc_resource
     steps:
@@ -38,6 +39,14 @@ jobs:
             # This was needed because the next step does an rm but several write protected files
             # under /home/circleci/project from previous git clone
             rm -rf /home/circleci/project
+            mkdir -p /home/circleci/project
+            git clone --branch $CIRCLE_BRANCH https://github.com/en-hackathon/ansible-dcnm.git
+  build-collection:
+    machine: true
+    resource_class: en-hackathon/ndfc_resource
+    steps:
+      - run:
+          command: |
       - advanced-checkout/shallow-checkout:
           fetch_lfs: true
           fetch_submodules: true
