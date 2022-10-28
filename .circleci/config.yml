@@ -5,7 +5,7 @@ workflows:
   testing:
     jobs:
       - clone-repo
-      # - build-collection
+      - build-collection
       # - sanity-test:
       #     requires:
       #       - build-collection
@@ -41,18 +41,16 @@ jobs:
             rm -rf /home/circleci/project
             mkdir -p /home/circleci/project
             # For this to work properly I did two things
-            # 1) Added ssh key in .ssh and on github
+            # 1) Added ssh key in .ssh and on github - this was likely not needed since I am using https
             # 2) Removed url.ssh://git@github.com.insteadof=https://github.com in git config
             git clone --branch $CIRCLE_BRANCH https://github.com/en-hackathon/ansible-dcnm.git /home/circleci/project
   build-collection:
     machine: true
     resource_class: en-hackathon/ndfc_resource
     steps:
-      - run:
-          command: |
-      - advanced-checkout/shallow-checkout:
-          fetch_lfs: true
-          fetch_submodules: true
+      # - advanced-checkout/shallow-checkout:
+      #     fetch_lfs: true
+      #     fetch_submodules: true
       - run:
           command: |
             /home/circleci/.pyenv/bin/pyenv local en-hackathon
