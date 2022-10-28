@@ -8,30 +8,31 @@ workflows:
       - build-collection:
           requires:
             - clone-repo
-      # - sanity-test:
-      #     requires:
-      #       - build-collection
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - develop
-      #           - main
-      #           - en-hackathon
-      # - full-regresion-test:
-      #     requires:
-      #       - build-collection
-      #     filters:
-      #       branches:
-      #        only:
-      #          - release-branch
-      # - deploy-on-galaxy:
-      #     filters:
-      #       tags:
-      #         only: /^2.*/
-      #       branches:
-      #         ignore: /.*/
+      - sanity-test:
+          requires:
+            - build-collection
+          filters:
+            branches:
+              ignore:
+                - develop
+                - main
+                - en-hackathon
+      - full-regresion-test:
+          requires:
+            - build-collection
+          filters:
+            branches:
+             only:
+               - release-branch
+      - deploy-on-galaxy:
+          filters:
+            tags:
+              only: /^2.*/
+            branches:
+              ignore: /.*/
 
 jobs:
+
   clone-repo:
     machine: true
     resource_class: en-hackathon/ndfc_resource
@@ -42,10 +43,12 @@ jobs:
             # under /home/circleci/project from previous git clone
             rm -rf /home/circleci/project
             mkdir -p /home/circleci/project
+
             # For this to work properly I did two things
             # 1) Added ssh key in .ssh and on github - this was likely not needed since I am using https
             # 2) Removed url.ssh://git@github.com.insteadof=https://github.com in git config
             git clone --branch $CIRCLE_BRANCH https://github.com/en-hackathon/ansible-dcnm.git /home/circleci/project
+  
   build-collection:
     machine: true
     resource_class: en-hackathon/ndfc_resource
@@ -64,21 +67,23 @@ jobs:
             /home/circleci/.pyenv/shims/ansible-galaxy collection build
             /home/circleci/.pyenv/shims/ansible-galaxy collection install ./mikewiebe*
             /home/circleci/.pyenv/shims/ansible-galaxy collection list
+  
   sanity-test:
     machine: true
     resource_class: en-hackathon/ndfc_resource
     steps:
       - run:
           command: |
-            env
-            echo "Sanity Test Complete"
-            whoami
+            # Enable Python Virtual Environment
             /home/circleci/.pyenv/bin/pyenv local en-hackathon
-            python --version
+
+            # Display Ansible Version
             /home/circleci/.pyenv/shims/ansible --version
+
+            # Run Ansible Sanity Test
             cd /home/circleci/en-hackathon
             source source_env
-            # /home/circleci/.pyenv/shims/ansible-playbook -i ndfc_inventory.yml ndfc_tests.yml -v
+            /home/circleci/.pyenv/shims/ansible-playbook -i ndfc_inventory.yml ndfc_tests.yml -v
 
   full-regresion-test:
     machine: true
@@ -86,8 +91,16 @@ jobs:
     steps:
       - run:
           command: |
-            env
-            echo "Full Regression Test Complete"
+            # Enable Python Virtual Environment
+            /home/circleci/.pyenv/bin/pyenv local en-hackathon
+
+            # Display Ansible Version
+            /home/circleci/.pyenv/shims/ansible --version
+
+            # Run Ansible Full Regression Test
+            cd /home/circleci/en-hackathon
+            source source_env
+            /home/circleci/.pyenv/shims/ansible-playbook -i ndfc_inventory.yml ndfc_tests.yml -v
 
   deploy-on-galaxy:
     machine: true
@@ -97,9 +110,8 @@ jobs:
           command: |
             # This was needed because the next step does an rm but several write protected files
             # under /home/circleci/project from previous git clone
-            env
             rm -rf /home/circleci/project
-            git clone $CIRCLE_REPOSITORY_URL /home/circleci/project
+            git clone https://github.com/en-hackathon/ansible-dcnm.git /home/circleci/project
             cd /home/circleci/project
             git status .
             git checkout $CIRCLE_TAG
