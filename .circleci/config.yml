@@ -5,34 +5,33 @@ workflows:
   ansible-ndfc-gates:
     jobs:
       - clone-repo
-      - check-branch-changes:
+      - check-branch-changes
+      - build-collection:
           requires:
             - clone-repo
-      # - build-collection:
-      #     requires:
-      #       - clone-repo
-      # - sanity-test:
-      #     requires:
-      #       - build-collection
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - main
-      #           - develop
-      #           - release-branch
-      # - full-regresion-test:
-      #     requires:
-      #       - build-collection
-      #     filters:
-      #       branches:
-      #        only:
-      #          - release-branch
-      # - deploy-on-galaxy:
-      #     filters:
-      #       tags:
-      #         only: /^2.*/
-      #       branches:
-      #         ignore: /.*/
+      - sanity-test:
+          requires:
+            - build-collection
+          filters:
+            branches:
+              ignore:
+                - main
+                - develop
+                - release-branch
+      - full-regresion-test:
+          requires:
+            - build-collection
+          filters:
+            branches:
+             only:
+               - release-branch
+               - check-branch-changes
+      - deploy-on-galaxy:
+          filters:
+            tags:
+              only: /^2.*/
+            branches:
+              ignore: /.*/
 
 jobs:
 
