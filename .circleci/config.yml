@@ -123,23 +123,33 @@ jobs:
   deploy-on-galaxy:
     machine: true
     resource_class: en-hackathon/ndfc_resource
+    environment:
+      PROJECT_HOME: /home/circleci/project
+      PROJECT_GIT_REPO: https://github.com/en-hackathon/ansible-dcnm.git
+      PROJECT_VIRTUAL_ENV: /home/circleci/.pyenv/bin/pyenv local en-hackathon
+      GALAXY_COMMAND: /home/circleci/.pyenv/shims/ansible-galaxy
+      CLEANUP_DIR: /home/circleci/.ansible/collections/ansible_collections/mikewiebe
+      ANSIBLE_BASE: /home/circleci/en-hackathon
+      ANSIBLE_COMMAND: /home/circleci/.pyenv/shims/ansible
+      ANSIBLE_PLAYBOOK_COMMAND: /home/circleci/.pyenv/shims/ansible-playbook
     steps:
       - run:
           command: |
             # This was needed because the next step does an rm but several write protected files
             # under /home/circleci/project from previous git clone
-            rm -rf /home/circleci/project
-            git clone https://github.com/en-hackathon/ansible-dcnm.git /home/circleci/project
-            cd /home/circleci/project
+            rm -rf $PROJECT_HOME
+            git clone $PROJECT_GIT_REPO $PROJECT_HOME
+            cd $PROJECT_HOME
             git status .
             git checkout $CIRCLE_TAG
             git status .
-            /home/circleci/.pyenv/bin/pyenv local en-hackathon
-            /home/circleci/.pyenv/shims/ansible-galaxy collection list
-            rm -rf /home/circleci/.ansible/collections/ansible_collections/mikewiebe/test-ci-publish/
-            /home/circleci/.pyenv/shims/ansible-galaxy collection list
-            cd /home/circleci/project/
-            /home/circleci/.pyenv/shims/ansible-galaxy collection build
-            /home/circleci/.pyenv/shims/ansible-galaxy collection install ./mikewiebe*
-            /home/circleci/.pyenv/shims/ansible-galaxy collection list
-            /home/circleci/.pyenv/shims/ansible-galaxy collection publish ./mikewiebe-test_ci_publish-${CIRCLE_TAG}.tar.gz --token=$ANSIBLE_GALAXY_TOKEN
+            $PROJECT_VIRTUAL_ENV
+            $GALAXY_COMMAND collection list
+            rm -rf $CLEANUP_DIR
+            sleep 10
+            $GALAXY_COMMAND collection list
+            cd $PROJECT_HOME
+            $GALAXY_COMMAND collection build
+            $GALAXY_COMMAND collection install ./mikewiebe*
+            $GALAXY_COMMAND collection list
+            $GALAXY_COMMAND collection publish ./mikewiebe-test_ci_publish-${CIRCLE_TAG}.tar.gz --token=$ANSIBLE_GALAXY_TOKEN
