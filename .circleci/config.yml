@@ -5,9 +5,9 @@ workflows:
   ansible-ndfc-gates:
     jobs:
       - clone-repo
-      # - build-collection:
-      #     requires:
-      #       - clone-repo
+      - build-collection:
+          requires:
+            - clone-repo
       # - sanity-test:
       #     requires:
       #       - build-collection
@@ -54,13 +54,16 @@ jobs:
   build-collection:
     machine: true
     resource_class: en-hackathon/ndfc_resource
+    environment:
+      PROJECT_HOME: /home/circleci/project
+      PROJECT_VIRTUAL_ENV: /home/circleci/.pyenv/bin/pyenv local en-hackathon
     steps:
       # - advanced-checkout/shallow-checkout:
       #     fetch_lfs: true
       #     fetch_submodules: true
       - run:
           command: |
-            /home/circleci/.pyenv/bin/pyenv local en-hackathon
+            $PROJECT_VIRTUAL_ENV
             /home/circleci/.pyenv/shims/ansible-galaxy collection list
             rm -rf /home/circleci/.ansible/collections/ansible_collections/mikewiebe/test-ci-publish/
             echo 'collection removed'
