@@ -58,7 +58,7 @@ jobs:
       PROJECT_HOME: /home/circleci/project
       PROJECT_VIRTUAL_ENV: /home/circleci/.pyenv/bin/pyenv local en-hackathon
       GALAXY_COMMAND: /home/circleci/.pyenv/shims/ansible-galaxy
-      CLEANUP_DIR: /home/circleci/.ansible/collections/ansible_collections/mikewiebe/test-ci-publish/
+      CLEANUP_DIR: /home/circleci/.ansible/collections/ansible_collections/mikewiebe
     steps:
       # - advanced-checkout/shallow-checkout:
       #     fetch_lfs: true
