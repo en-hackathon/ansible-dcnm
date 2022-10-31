@@ -117,6 +117,8 @@ jobs:
 
             # Run Ansible Full Regression Test
             cd $ANSIBLE_BASE
+            ls -lh
+            cat check_branches.py
             source source_env
             python check_branches.py
 
