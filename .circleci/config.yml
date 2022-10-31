@@ -1,10 +1,6 @@
 version: 2.1
 orbs:
   advanced-checkout: vsco/advanced-checkout@1.0.0
-environment:
-  PROJECT_HOME: /home/circleci/project
-  PROJECT_GIT_REPO: https://github.com/en-hackathon/ansible-dcnm.git
-
 workflows:
   ansible-ndfc-gates:
     jobs:
@@ -40,6 +36,9 @@ jobs:
   clone-repo:
     machine: true
     resource_class: en-hackathon/ndfc_resource
+    environment:
+      PROJECT_HOME: /home/circleci/project
+      PROJECT_GIT_REPO: https://github.com/en-hackathon/ansible-dcnm.git
     steps:
       - run:
           command: |
