@@ -39,17 +39,16 @@ jobs:
     environment:
       PROJECT_HOME: /home/circleci/project
       PROJECT_GIT_REPO: https://github.com/en-hackathon/ansible-dcnm.git
+    # This was needed because the next step does an rm but several write protected files
+    # under /home/circleci/project from previous git clone
+    # For this to work properly I did two things
+    # 1) Added ssh key in .ssh and on github - this was likely not needed since I am using https
+    # 2) Removed url.ssh://git@github.com.insteadof=https://github.com in git config
     steps:
       - run:
           command: |
-            # This was needed because the next step does an rm but several write protected files
-            # under /home/circleci/project from previous git clone
             rm -rf $PROJECT_HOME
             mkdir -p $PROJECT_HOME
-
-            # For this to work properly I did two things
-            # 1) Added ssh key in .ssh and on github - this was likely not needed since I am using https
-            # 2) Removed url.ssh://git@github.com.insteadof=https://github.com in git config
             git clone --branch $CIRCLE_BRANCH $PROJECT_GIT_REPO $PROJECT_HOME
   
   build-collection:
