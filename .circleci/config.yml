@@ -70,7 +70,7 @@ jobs:
             echo "REMOVE COLLECTION"
             rm -rf $CLEANUP_DIR
             sleep 10
-            ls -lh /home/circleci/.ansible/collections/ansible_collections/
+            ls -lh /home/circleci/.ansible/collections/ansible_collections/mikewiebe
             echo 'COLLECTION REMOVED?'
             $GALAXY_COMMAND collection list
             cd $PROJECT_HOME
