@@ -57,6 +57,8 @@ jobs:
     environment:
       PROJECT_HOME: /home/circleci/project
       PROJECT_VIRTUAL_ENV: /home/circleci/.pyenv/bin/pyenv local en-hackathon
+      GALAXY_COMMAND: /home/circleci/.pyenv/shims/ansible-galaxy
+      CLEANUP_DIR: /home/circleci/.ansible/collections/ansible_collections/mikewiebe/test-ci-publish/
     steps:
       # - advanced-checkout/shallow-checkout:
       #     fetch_lfs: true
@@ -64,14 +66,14 @@ jobs:
       - run:
           command: |
             $PROJECT_VIRTUAL_ENV
-            /home/circleci/.pyenv/shims/ansible-galaxy collection list
-            rm -rf /home/circleci/.ansible/collections/ansible_collections/mikewiebe/test-ci-publish/
+            $GALAXY_COMMAND collection list
+            rm -rf $CLEANUP_DIR
             echo 'collection removed'
-            /home/circleci/.pyenv/shims/ansible-galaxy collection list
-            cd /home/circleci/project/
-            /home/circleci/.pyenv/shims/ansible-galaxy collection build
-            /home/circleci/.pyenv/shims/ansible-galaxy collection install ./mikewiebe*
-            /home/circleci/.pyenv/shims/ansible-galaxy collection list
+            $GALAXY_COMMAND collection list
+            cd $PROJECT_HOME
+            $GALAXY_COMMAND collection build
+            $GALAXY_COMMAND collection install ./mikewiebe*
+            $GALAXY_COMMAND collection list
   
   sanity-test:
     machine: true
