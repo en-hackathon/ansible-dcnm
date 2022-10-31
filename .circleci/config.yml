@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   advanced-checkout: vsco/advanced-checkout@1.0.0
 workflows:
-  testing:
+  ansible-ndfc-gates:
     jobs:
       - clone-repo
       - build-collection:
