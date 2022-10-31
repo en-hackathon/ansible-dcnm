@@ -115,7 +115,7 @@ jobs:
             # Display Ansible Version
             $ANSIBLE_COMMAND --version
 
-            # Run Ansible Sanity Test
+            # Run Ansible Full Regression Test
             cd $ANSIBLE_BASE
             source source_env
             python check_branches.py
