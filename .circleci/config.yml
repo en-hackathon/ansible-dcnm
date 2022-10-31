@@ -118,6 +118,7 @@ jobs:
             # Run Ansible Sanity Test
             cd $ANSIBLE_BASE
             source source_env
+            cd $PROJECT_HOME
             cp $ANSIBLE_SCRIPT .
             python check_branches.py
 
