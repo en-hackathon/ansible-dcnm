@@ -79,6 +79,7 @@ jobs:
       PROJECT_HOME: /home/circleci/project
       PROJECT_VIRTUAL_ENV: /home/circleci/.pyenv/bin/pyenv local en-hackathon
       GALAXY_COMMAND: /home/circleci/.pyenv/shims/ansible-galaxy
+      ANSIBLE_BASE: /home/circleci/en-hackathon
       ANSIBLE_COMMAND: /home/circleci/.pyenv/shims/ansible
       ANSIBLE_PLAYBOOK_COMMAND: /home/circleci/.pyenv/shims/ansible-playbook
     steps:
@@ -91,7 +92,7 @@ jobs:
             $ANSIBLE_COMMAND --version
 
             # Run Ansible Sanity Test
-            cd $PROJECT_HOME
+            cd $ANSIBLE_BASE
             source source_env
             $ANSIBLE_PLAYBOOK_COMMAND -i ndfc_inventory.yml ndfc_tests.yml -v
 
@@ -102,6 +103,7 @@ jobs:
       PROJECT_HOME: /home/circleci/project
       PROJECT_VIRTUAL_ENV: /home/circleci/.pyenv/bin/pyenv local en-hackathon
       GALAXY_COMMAND: /home/circleci/.pyenv/shims/ansible-galaxy
+      ANSIBLE_BASE: /home/circleci/en-hackathon
       ANSIBLE_COMMAND: /home/circleci/.pyenv/shims/ansible
       ANSIBLE_PLAYBOOK_COMMAND: /home/circleci/.pyenv/shims/ansible-playbook
     steps:
@@ -114,7 +116,7 @@ jobs:
             $ANSIBLE_COMMAND --version
 
             # Run Ansible Sanity Test
-            cd $PROJECT_HOME
+            cd $ANSIBLE_BASE
             source source_env
             $ANSIBLE_PLAYBOOK_COMMAND -i ndfc_inventory.yml ndfc_tests.yml -v
 
