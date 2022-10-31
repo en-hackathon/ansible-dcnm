@@ -67,8 +67,10 @@ jobs:
           command: |
             $PROJECT_VIRTUAL_ENV
             $GALAXY_COMMAND collection list
+            echo "REMOVE COLLECTION"
             rm -rf $CLEANUP_DIR
-            echo 'collection removed'
+            ls -lh $CLEANUP_DIR
+            echo 'COLLECTION REMOVED?'
             $GALAXY_COMMAND collection list
             cd $PROJECT_HOME
             $GALAXY_COMMAND collection build
