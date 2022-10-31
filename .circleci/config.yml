@@ -21,11 +21,11 @@ workflows:
       - full-regresion-test:
           requires:
             - build-collection
+            - check-branch-changes
           filters:
             branches:
              only:
                - release-branch
-               - check-branch-changes
       - deploy-on-galaxy:
           filters:
             tags:
