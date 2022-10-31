@@ -67,15 +67,15 @@ jobs:
           command: |
             $PROJECT_VIRTUAL_ENV
             $GALAXY_COMMAND collection list
-            echo "REMOVE COLLECTION"
-            rm -rf $CLEANUP_DIR
-            sleep 10
-            ls -lh /home/circleci/.ansible/collections/ansible_collections
-            echo 'COLLECTION REMOVED?'
-            $GALAXY_COMMAND collection list
+            # echo "REMOVE COLLECTION"
+            # rm -rf $CLEANUP_DIR
+            # sleep 10
+            # ls -lh /home/circleci/.ansible/collections/ansible_collections
+            # echo 'COLLECTION REMOVED?'
+            # $GALAXY_COMMAND collection list
             cd $PROJECT_HOME
             $GALAXY_COMMAND collection build
-            $GALAXY_COMMAND collection install ./mikewiebe*
+            $GALAXY_COMMAND collection install --force ./mikewiebe*
             $GALAXY_COMMAND collection list
   
   sanity-test:
