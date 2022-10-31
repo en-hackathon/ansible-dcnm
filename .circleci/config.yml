@@ -69,7 +69,7 @@ jobs:
             $GALAXY_COMMAND collection list
             echo "REMOVE COLLECTION"
             rm -rf $CLEANUP_DIR
-            ls -lh $CLEANUP_DIR
+            sleep 10
             echo 'COLLECTION REMOVED?'
             $GALAXY_COMMAND collection list
             cd $PROJECT_HOME
