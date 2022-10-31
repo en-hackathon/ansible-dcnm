@@ -117,9 +117,9 @@ jobs:
 
             # Run Ansible Full Regression Test
             cd $ANSIBLE_BASE
-            ls -lh
-            cat check_branches.py
             source source_env
+            cd $PROJECT_HOME
+            cp /home/circleci/en-hackathon/check_branches.py .
             python check_branches.py
 
   deploy-on-galaxy:
