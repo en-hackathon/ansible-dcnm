@@ -8,28 +8,28 @@ workflows:
       - build-collection:
           requires:
             - clone-repo
-      # - sanity-test:
-      #     requires:
-      #       - build-collection
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - main
-      #           - develop
-      #           - release-branch
-      # - full-regresion-test:
-      #     requires:
-      #       - build-collection
-      #     filters:
-      #       branches:
-      #        only:
-      #          - release-branch
-      # - deploy-on-galaxy:
-      #     filters:
-      #       tags:
-      #         only: /^2.*/
-      #       branches:
-      #         ignore: /.*/
+      - sanity-test:
+          requires:
+            - build-collection
+          filters:
+            branches:
+              ignore:
+                - main
+                - develop
+                - release-branch
+      - full-regresion-test:
+          requires:
+            - build-collection
+          filters:
+            branches:
+             only:
+               - release-branch
+      - deploy-on-galaxy:
+          filters:
+            tags:
+              only: /^2.*/
+            branches:
+              ignore: /.*/
 
 jobs:
 
@@ -67,12 +67,6 @@ jobs:
           command: |
             $PROJECT_VIRTUAL_ENV
             $GALAXY_COMMAND collection list
-            # echo "REMOVE COLLECTION"
-            # rm -rf $CLEANUP_DIR
-            # sleep 10
-            # ls -lh /home/circleci/.ansible/collections/ansible_collections
-            # echo 'COLLECTION REMOVED?'
-            # $GALAXY_COMMAND collection list
             cd $PROJECT_HOME
             $GALAXY_COMMAND collection build
             $GALAXY_COMMAND collection install --force ./mikewiebe*
@@ -81,36 +75,48 @@ jobs:
   sanity-test:
     machine: true
     resource_class: en-hackathon/ndfc_resource
+    environment:
+      PROJECT_HOME: /home/circleci/project
+      PROJECT_VIRTUAL_ENV: /home/circleci/.pyenv/bin/pyenv local en-hackathon
+      GALAXY_COMMAND: /home/circleci/.pyenv/shims/ansible-galaxy
+      ANSIBLE_COMMAND: /home/circleci/.pyenv/shims/ansible
+      ANSIBLE_PLAYBOOK_COMMAND: /home/circleci/.pyenv/shims/ansible-playbook
     steps:
       - run:
           command: |
             # Enable Python Virtual Environment
-            /home/circleci/.pyenv/bin/pyenv local en-hackathon
+            $PROJECT_VIRTUAL_ENV
 
             # Display Ansible Version
-            /home/circleci/.pyenv/shims/ansible --version
+            $ANSIBLE_COMMAND --version
 
             # Run Ansible Sanity Test
-            cd /home/circleci/en-hackathon
+            cd $PROJECT_HOME
             source source_env
-            /home/circleci/.pyenv/shims/ansible-playbook -i ndfc_inventory.yml ndfc_tests.yml -v
+            $ANSIBLE_PLAYBOOK_COMMAND -i ndfc_inventory.yml ndfc_tests.yml -v
 
   full-regresion-test:
     machine: true
     resource_class: en-hackathon/ndfc_resource
+    environment:
+      PROJECT_HOME: /home/circleci/project
+      PROJECT_VIRTUAL_ENV: /home/circleci/.pyenv/bin/pyenv local en-hackathon
+      GALAXY_COMMAND: /home/circleci/.pyenv/shims/ansible-galaxy
+      ANSIBLE_COMMAND: /home/circleci/.pyenv/shims/ansible
+      ANSIBLE_PLAYBOOK_COMMAND: /home/circleci/.pyenv/shims/ansible-playbook
     steps:
       - run:
           command: |
             # Enable Python Virtual Environment
-            /home/circleci/.pyenv/bin/pyenv local en-hackathon
+            $PROJECT_VIRTUAL_ENV
 
             # Display Ansible Version
-            /home/circleci/.pyenv/shims/ansible --version
+            $ANSIBLE_COMMAND --version
 
-            # Run Ansible Full Regression Test
-            cd /home/circleci/en-hackathon
+            # Run Ansible Sanity Test
+            cd $PROJECT_HOME
             source source_env
-            /home/circleci/.pyenv/shims/ansible-playbook -i ndfc_inventory.yml ndfc_tests.yml -v
+            $ANSIBLE_PLAYBOOK_COMMAND -i ndfc_inventory.yml ndfc_tests.yml -v
 
   deploy-on-galaxy:
     machine: true
