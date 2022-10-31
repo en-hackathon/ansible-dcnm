@@ -5,7 +5,7 @@ version: 2.1.19
 readme: README.md
 authors:
   - Mike Wiebe <mikewiebe>
-description: Test publication of a collection via pipeline
+description: Test publication of a collection using CI_CD pipeline
 license_file: LICENSE 
 tags: [test, ci]
 dependencies:
